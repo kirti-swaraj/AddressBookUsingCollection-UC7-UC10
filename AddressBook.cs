@@ -265,6 +265,22 @@ namespace AddressBookSystemUsingCollection
                 personNameList.Add(fullName);
                 cityAndStatePersonDictionary.Add(cityOrStateName, personNameList);
             }
+        }  
+        
+        /// <summary>
+           /// UC 10 : DISPLAYS THE COUNT OF CONTACTS PRESENT AT THE ENTERED CITY OR STATE
+           /// </summary>
+        public static void GetCountByCityOrState()
+        {
+            Console.WriteLine("Enter either a city or state name to get number of contacts within the location:");
+            string cityOrStateName = Console.ReadLine().ToUpper();
+            Console.WriteLine("\nNumber of contact persons present at {0}:", cityOrStateName);
+            /// CHECKS IF THE DICTIONARY ALREADY CONTAINS THE CITY/STATE
+            if (cityAndStatePersonDictionary.ContainsKey(cityOrStateName))
+                ///DISPLAYS THE COUNT
+                Console.WriteLine(cityAndStatePersonDictionary[cityOrStateName].Count);
+            else
+                Console.WriteLine(0);
         }
     }
 }
