@@ -22,6 +22,13 @@ namespace AddressBookSystemUsingCollection
         public List<Contact> contactList = new List<Contact>();
 
         /// <summary>
+        /// UC 9 : THE DICTIONARY IS MAINTAINED WITH KEY AS CITY/STATE NAME AND VALUE AS A LIST WHICH CONTAINS NAMES OF
+        ///        PEOPLE ALONG THE PROPER CITY/STATE NAME,
+        ///        static TO STORE VALUES ACROSS ALL ADDRESS BOOKS
+        /// </summary>
+        public static Dictionary<string, List<string>> cityAndStatePersonDictionary = new Dictionary<string, List<string>>();
+
+        /// <summary>
         /// SPECIFIES THE NAME OF THE ADDRESS BOOK
         /// </summary>
         public string addressBookName;
@@ -62,6 +69,7 @@ namespace AddressBookSystemUsingCollection
 
             Contact contact = new Contact(firstName, lastName, address, city, state, zip, phoneNumber, email);
             bool flag = false;
+            string fullName = firstName + " " + lastName;
             foreach (var v in contactList)
             {
                 /// CALLING OVERRIDDEN Equals() METHOD WITH EACH OBJECT IN CONTACTLIST AS PARAMETER TO CHECK FOR DUPLICATES
@@ -76,6 +84,9 @@ namespace AddressBookSystemUsingCollection
             {
                 contactList.Add(contact);
                 Console.WriteLine("\nContact " + firstName + " " + lastName + " added successfully");
+                /// ADDS THE ENTERED NAME IN A LIST IN THE DICTIONARY ALONG THE PROPER CITY AND STATE NAME
+                AddPersonInStateOrCityDictionary(city, fullName);
+                AddPersonInStateOrCityDictionary(state, fullName);
             }
         }
 
@@ -128,9 +139,9 @@ namespace AddressBookSystemUsingCollection
         {
             bool flag1 = true;
             Console.WriteLine("Enter first name of the contact to edit");
-            string firstName = Console.ReadLine();
+            string firstName = Console.ReadLine().ToUpper();
             Console.WriteLine("Enter last name");
-            string lastName = Console.ReadLine();
+            string lastName = Console.ReadLine().ToUpper();
             foreach (var contact in contactList)
             {
                 if (firstName == contact.firstName && lastName == contact.lastName)
@@ -191,9 +202,9 @@ namespace AddressBookSystemUsingCollection
         {
             bool flag = true;
             Console.WriteLine("Enter the first name of contact you want to delete");
-            string firstName = Console.ReadLine();
+            string firstName = Console.ReadLine().ToUpper();
             Console.WriteLine("Enter the last name of contact you want to delete");
-            string lastName = Console.ReadLine();
+            string lastName = Console.ReadLine().ToUpper();
             for (int i = 0; i < contactList.Count; i++)
             {
                 if (firstName == contactList[i].firstName && lastName == contactList[i].lastName)
@@ -202,10 +213,58 @@ namespace AddressBookSystemUsingCollection
                     contactList.RemoveAt(i);
                     Console.WriteLine("\nContact {0} {1} deleted successfully", firstName, lastName);
                     flag = false;
+                    ///UC9 UPDATION OF DICTIONARY AFTER REMOVAL OF ANY ELEMENT
+                    foreach (var kvp in cityAndStatePersonDictionary)
+                    {
+                        if (kvp.Value.Contains(firstName + " " + lastName))
+                            kvp.Value.Remove(firstName + " " + lastName);
+                    }
                 }
             }
             if (flag == true)
                 Console.WriteLine("Error:Contact not found");
+        }
+
+        /// <summary>
+        /// UC 9 : DISPLAYS NAME OF ALL CONTACTS WHO LIVE IN THE GIVEN STATE OR CITY
+        /// </summary>
+        public static void ViewPeopleByCityOrState()
+        {
+            Console.WriteLine("Enter either a city or state name to view contacts:");
+            string cityOrStateName = Console.ReadLine().ToUpper();
+            foreach (var kvp in cityAndStatePersonDictionary)
+            {
+                if (kvp.Key == cityOrStateName)
+                {
+                    foreach (var v in kvp.Value)
+                    {
+                        Console.WriteLine("Location " + cityOrStateName + ": " + v);
+                    }
+                    if (kvp.Value.Count == 0)
+                        Console.WriteLine("\nNo contact found");
+                }
+            }
+            if (cityAndStatePersonDictionary.Count == 0)
+                Console.WriteLine("\nNo contact person found in " + cityOrStateName);
+        }
+
+        /// <summary>
+        /// UC 9 : ADDS THE NAME OF THE PERSON IN A LIST TO BE UPDATED IN DICTIONARY
+        /// </summary>
+        /// <param name="cityOrStateName">Name of the city or state.</param>
+        /// <param name="fullName">The full name.</param>
+        public void AddPersonInStateOrCityDictionary(string cityOrStateName, string fullName)
+        {
+            if (cityAndStatePersonDictionary.ContainsKey(cityOrStateName))
+            {
+                cityAndStatePersonDictionary[cityOrStateName].Add(fullName);
+            }
+            else
+            {
+                List<string> personNameList = new List<string>();
+                personNameList.Add(fullName);
+                cityAndStatePersonDictionary.Add(cityOrStateName, personNameList);
+            }
         }
     }
 }
