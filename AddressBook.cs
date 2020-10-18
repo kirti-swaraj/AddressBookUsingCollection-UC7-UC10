@@ -37,19 +37,19 @@ namespace AddressBookSystemUsingCollection
         public void AddNewContact()
         {
             Console.WriteLine("Enter first name");
-            string firstName = Console.ReadLine();
+            string firstName = Console.ReadLine().ToUpper();
 
             Console.WriteLine("Enter last name");
-            string lastName = Console.ReadLine();
+            string lastName = Console.ReadLine().ToUpper();
 
             Console.WriteLine("Enter address");
-            string address = Console.ReadLine();
+            string address = Console.ReadLine().ToUpper();
 
             Console.WriteLine("Enter city name");
-            string city = Console.ReadLine();
+            string city = Console.ReadLine().ToUpper();
 
             Console.WriteLine("Enter state");
-            string state = Console.ReadLine();
+            string state = Console.ReadLine().ToUpper();
 
             Console.WriteLine("Enter zip");
             double zip = Convert.ToDouble(Console.ReadLine());
@@ -58,7 +58,7 @@ namespace AddressBookSystemUsingCollection
             double phoneNumber = Convert.ToDouble(Console.ReadLine());
 
             Console.WriteLine("Enter email");
-            string email = Console.ReadLine();
+            string email = Console.ReadLine().ToLower();
 
             Contact contact = new Contact(firstName, lastName, address, city, state, zip, phoneNumber, email);
             bool flag = false;
@@ -67,7 +67,7 @@ namespace AddressBookSystemUsingCollection
                 /// CALLING OVERRIDDEN Equals() METHOD WITH EACH OBJECT IN CONTACTLIST AS PARAMETER TO CHECK FOR DUPLICATES
                 if (contact.Equals(v))
                 {
-                    Console.WriteLine("\n A Contact already exists with the entered name, please enter a different name to add new contact");
+                    Console.WriteLine("\nError: A Contact already exists with name {0} {1}, please enter a different name to add new contact", firstName, lastName);
                     flag = true;
                     break;
                 }
@@ -111,6 +111,10 @@ namespace AddressBookSystemUsingCollection
         /// </summary>
         public void ViewAllContacts()
         {
+            if (contactList.Count == 0)
+            {
+                Console.WriteLine("\nNo contact found, please add a contact to display");
+            }
             foreach (var contact in contactList)
             {
                 Console.WriteLine("\nFullName: " + contact.firstName + " " + contact.lastName + "\nAddress: " + contact.address + "\nCity: " + contact.city + "\nState: " + contact.state + "\nZip: " + contact.zip + "\nPhoneNumber: " + contact.phoneNumber + "\nEmail: " + contact.email + "\n");
