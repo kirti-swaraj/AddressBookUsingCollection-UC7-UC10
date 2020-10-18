@@ -21,7 +21,8 @@ namespace AddressBookSystemUsingCollection
             while (flag1)
             {
                 string currentAddressBookName = "";
-                Console.WriteLine("\nEnter:\n1-To add a new address Book\n2-To access an existing address book\n3-To exit");
+                Console.WriteLine("\nEnter:\n1-To add a new address Book\n2-To access an existing address book" +
+                 "\n3-To search person in a state or city across multiple address books\n4-To exit");
                 int options1 = Convert.ToInt32(Console.ReadLine());
                 switch (options1)
                 {
@@ -32,6 +33,9 @@ namespace AddressBookSystemUsingCollection
                         currentAddressBookName = addressBookList.ExistingAddressBook();
                         break;
                     case 3:
+                        addressBookList.SearchPersonByCityOrState();
+                        break;
+                    case 4:
                         flag1 = false;
                         break;
                 }

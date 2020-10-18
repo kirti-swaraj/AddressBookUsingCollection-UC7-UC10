@@ -27,7 +27,7 @@ namespace AddressBookSystemUsingCollection
         public void AddNewAddressBook()
         {
             Console.WriteLine("Enter the name of address book:");
-            string addressBookName = Console.ReadLine();
+            string addressBookName = Console.ReadLine().ToUpper();
             AddressBook addressBook = new AddressBook(addressBookName);
             /// HANDLES THE EXCEPTION WHEN THE USER TRIES TO ENTER DUPLICATE ADDRESS BOOK NAME
             try
@@ -37,7 +37,7 @@ namespace AddressBookSystemUsingCollection
                 Console.WriteLine("Updated Address Book List:");
                 foreach (var kvp in addressBookListDictionary)
                 {
-                    Console.WriteLine("Key: {0}, Value: {1}", kvp.Key, kvp.Value);
+                    Console.WriteLine(kvp.Key);
                 }
             }
             catch (Exception)
@@ -54,7 +54,7 @@ namespace AddressBookSystemUsingCollection
         public string ExistingAddressBook()
         {
             Console.WriteLine("Enter the Address Book name");
-            string addressBookName = Console.ReadLine();
+            string addressBookName = Console.ReadLine().ToUpper();
             string result = "";
             bool flag = true;
             foreach (var kvp in addressBookListDictionary)
@@ -71,6 +71,44 @@ namespace AddressBookSystemUsingCollection
                 Console.WriteLine("No Address Book with name " + addressBookName + " found\nPlease create a new address book");
             }
             return result;
+        } /// <summary>
+          /// UC 8 : SEARCHES FOR THE PERSON IN A PARTICULAR STATE OR CITY ACROSS ALL ADDRESS BOOKS AND DISPLAYS THE DETAILS
+          /// </summary>
+        public void SearchPersonByCityOrState()
+        {
+           
+            Console.WriteLine("Enter either a city or state name below to search for people:");
+            string cityOrStateName = Console.ReadLine().ToUpper();
+            Console.WriteLine("Enter first name of the person you are searching");
+            string firstName = Console.ReadLine().ToUpper();
+            Console.WriteLine("Enter last name");
+            string lastName = Console.ReadLine().ToUpper();
+            if (addressBookListDictionary.Count != 0)
+            {
+                bool flag = false;
+                foreach (var kvp in addressBookListDictionary)
+                {
+                    for (int i = 0; i < kvp.Value.contactList.Count; i++)
+                    {
+                        if (kvp.Value.contactList[i].city == cityOrStateName || kvp.Value.contactList[i].state == cityOrStateName)
+                        {
+                            if (kvp.Value.contactList[i].firstName == firstName && kvp.Value.contactList[i].lastName == lastName)
+                            {
+                                /// IF BOTH NAME AND CITY/STATE OF A CONTACT ACROSS ANY ADDRESS BOOK MATCHES THE ENTERED DETAILS
+                                Console.WriteLine("\nContact found inside address book: " + kvp.Key);
+                                Console.WriteLine("FullName: " + kvp.Value.contactList[i].firstName + " " + kvp.Value.contactList[i].lastName + "\nAddress: " + kvp.Value.contactList[i].address + "\nCity: " + kvp.Value.contactList[i].city + "\nState: " + kvp.Value.contactList[i].state + "\nZip: " + kvp.Value.contactList[i].zip + "\nPhoneNumber: " + kvp.Value.contactList[i].phoneNumber + "\nEmail: " + kvp.Value.contactList[i].email + "\n");
+                                flag = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                /// IF flag VALUE DOES NOT CHANGE MEANS NO MATCH FOR THE ENTERED DETAILS WAS FOUND
+                if (flag == false)
+                    Console.WriteLine("\nNo such contact found");
+            }
+            else
+                Console.WriteLine("\nNo stored address book found, please add one");
         }
     }
 }
