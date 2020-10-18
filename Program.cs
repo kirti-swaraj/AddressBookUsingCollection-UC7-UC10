@@ -22,7 +22,7 @@ namespace AddressBookSystemUsingCollection
             {
                 string currentAddressBookName = "";
                 Console.WriteLine("\nEnter:\n1-To add a new address Book\n2-To access an existing address book" +
-                 "\n3-To search person in a state or city across multiple address books\n4-To exit");
+                "\n3-To search person in a state or city across multiple address books\n4-View all persons of a city or state\n5-To exit");
                 int options1 = Convert.ToInt32(Console.ReadLine());
                 switch (options1)
                 {
@@ -36,6 +36,9 @@ namespace AddressBookSystemUsingCollection
                         addressBookList.SearchPersonByCityOrState();
                         break;
                     case 4:
+                        AddressBook.ViewPeopleByCityOrState();
+                        break;
+                    case 5:
                         flag1 = false;
                         break;
                 }

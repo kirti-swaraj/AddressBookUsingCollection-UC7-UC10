@@ -14,7 +14,7 @@ namespace AddressBookSystemUsingCollection
     /// <summary>
     /// CONTAINS NUMEROUS ADDRESS BOOKS
     /// </summary>
-    class AddressBookList
+   public class AddressBookList
     {
         /// <summary>
         /// STORES THE NUMEROUS ADDRESS BOOKS WITH KEY AS THE ADDDRESS BOOK NAME
@@ -76,7 +76,7 @@ namespace AddressBookSystemUsingCollection
           /// </summary>
         public void SearchPersonByCityOrState()
         {
-           
+            
             Console.WriteLine("Enter either a city or state name below to search for people:");
             string cityOrStateName = Console.ReadLine().ToUpper();
             Console.WriteLine("Enter first name of the person you are searching");
